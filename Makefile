@@ -59,15 +59,30 @@ deps:
 	mkdir -p appengine/third-party
 	wget -N https://unpkg.com/@babel/standalone@7.14.8/babel.min.js
 	mv babel.min.js appengine/third-party/
-	@# GitHub doesn't support git archive, so download files using svn.
-	svn export --force https://github.com/ajaxorg/ace-builds/trunk/src-min-noconflict/ appengine/third-party/ace
+	@# GitHub doesn't support git archive, so download files using wget/unzip.
+	mkdir -p appengine/third-party/ace
+	wget -O ace.zip https://github.com/ajaxorg/ace-builds/archive/master.zip
+	unzip -o ace.zip
+	mv -f ace-builds-master/src-min-noconflict/* appengine/third-party/ace/
+	rm -rf ace-builds-master ace.zip
 	mkdir -p appengine/third-party/blockly
-	svn export --force https://github.com/NeilFraser/blockly-for-BG/trunk/ appengine/third-party/blockly
-	svn export --force https://github.com/CreateJS/SoundJS/trunk/lib/ appengine/third-party/SoundJS
+	wget -O blockly.zip https://github.com/NeilFraser/blockly-for-BG/archive/master.zip
+	unzip -o blockly.zip
+	mv -f blockly-for-BG-master/* appengine/third-party/blockly/
+	rm -rf blockly-for-BG-master blockly.zip
+	mkdir -p appengine/third-party/SoundJS
+	wget -O SoundJS.zip https://github.com/CreateJS/SoundJS/archive/master.zip
+	unzip -o SoundJS.zip
+	mv -f SoundJS-master/lib/* appengine/third-party/SoundJS/
+	rm -rf SoundJS-master SoundJS.zip
 	cp third-party/base.js appengine/third-party/
 	cp -R third-party/soundfonts appengine/third-party/
 
-	svn export --force https://github.com/NeilFraser/JS-Interpreter/trunk/ appengine/third-party/JS-Interpreter
+	mkdir -p appengine/third-party/JS-Interpreter
+	wget -O JS-Interpreter.zip https://github.com/NeilFraser/JS-Interpreter/archive/master.zip
+	unzip -o JS-Interpreter.zip
+	mv -f JS-Interpreter-master/* appengine/third-party/JS-Interpreter/
+	rm -rf JS-Interpreter-master JS-Interpreter.zip
 	@# Compile JS-Interpreter using SIMPLE_OPTIMIZATIONS because the Music game needs to mess with the stack.
 	java -jar build/third-party-downloads/closure-compiler.jar\
 	  --language_out ECMASCRIPT5\
